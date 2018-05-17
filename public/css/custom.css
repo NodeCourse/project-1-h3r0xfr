@@ -1,3 +1,23 @@
 /*============================================================================================*/
 /* Your custom styles below */
 /*============================================================================================*/
+
+.editable-clear-x {
+    right: 10px;
+    margin-top: -20px;
+}
+
+.editable-buttons {
+    display: none;
+}
+
+.editable-container.editable-inline,
+.editable-container.editable-inline div,
+.editable-container.editable-inline .control-group.form-group,
+.editable-container.editable-inline .control-group.form-group .editable-input,
+.editable-container.editable-inline .control-group.form-group .editable-input textarea,
+.editable-container.editable-inline .control-group.form-group .editable-input select,
+.editable-container.editable-inline .control-group.form-group .editable-input input:not([type=radio]):not([type=checkbox]):not([type=submit])
+{
+    width: 100%;
+}

@@ -3,6 +3,7 @@ const formidable = require('formidable');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const express = require('express');
+require('express-group-routes');
 const app = express();
 
 const db = require('./database');
@@ -32,13 +33,11 @@ function render(req, res, view, params) {
         data = {};
 
     if(req.user) {
-        console.log('User logged: ' + req.user.email);
         if(auth.routes.noLogin.includes(view))
             return res.redirect('/');
         data.user = req.user;
     }
     else if(auth.routes.needLogin.includes(view)) {
-        console.log('User not logged but required');
         return res.redirect('/login');
     }
 
@@ -139,6 +138,40 @@ app.post('/register', (req, res) => {
         }
         else
             return showError(res, 'register', 'Vous devez compléter tous les champs.');
+    });
+});
+
+// API endpoint
+app.group('/api', (router) => {
+    router.group('/poll', (router) => {
+
+        router.post("/new", (req, res) => {
+            if(req.user) {
+                let form = new formidable.IncomingForm();
+
+                form.parse(req, function (err, fields, files) {
+                    console.log(fields.answers);
+
+                    db.Poll.create({
+                        question: fields.question,
+                        description: fields.description,
+                        userId: req.user.id
+                    }).then((poll) => {
+                        if(poll) {
+                            let answers = JSON.parse(fields.answers);
+                            answers.forEach(function(element) {
+                                element.pollId = poll.id;
+                            });
+
+                            db.Answer.bulkCreate(answers);
+                        }
+                    });
+                });
+            } else {
+                res.json({ error: 'Authentication required' });
+            }
+        });
+
     });
 });
 

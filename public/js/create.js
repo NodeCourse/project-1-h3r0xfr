@@ -21,4 +21,37 @@ $(document).ready(function() {
         answer.children('strong').text('Réponse').editable();
         answer.children('span').text('Description').editable();
     });
+
+    $('.forward')
+        .removeAttr('disabled')
+        .on('click', function() {
+            let answers = [];
+            let total = $('.item > label').length;
+
+            $('.item > label').each(function(index, element) {
+                if(index < (total - 1)) {
+                    answers.push({
+                        answer: $(element).children('strong').text(),
+                        description: $(element).children('span').text()
+                    });
+                }
+            });
+
+            let poll = {
+                question: $('#question').text(),
+                description: $('#description').text(),
+                answers: JSON.stringify(answers)
+            };
+
+            $.ajax({
+                url: '/api/poll/new',
+                type: 'POST',
+                dataType: 'json',
+                data: poll
+            }).done(function(res) {
+                console.log(res);
+                // TODO
+            });
+
+        });
 });
