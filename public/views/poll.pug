@@ -5,14 +5,12 @@ main
         //
             form#wrapped(name='example-1', method='POST')
                 input#website(name='website', type='text', value='')
-        // Leave input above for security protection, read docs for details
         #middle-wizard
-          // First branch What Type of Project ==============================
           .step(data-state='branchtype')
             .question_title(id="poll_" + poll.id)
               h3 #{poll.question}
               p #{poll.description}
-            .row
+            .row.justify-content-center
               each answer in poll.answers
                   .col-lg-4
                     .item
@@ -25,8 +23,5 @@ main
 
         #bottom-wizard
           button.forward(type='button', name='forward') Valider
-        // /bottom-wizard
-    // /Wizard container
-  // /Container
-// /main
+
 include footer.pug

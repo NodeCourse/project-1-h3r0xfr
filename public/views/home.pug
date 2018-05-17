@@ -7,13 +7,16 @@ main
             .question_title
               h3 Bienvenue
               p Découvrez les sondages publics que nos utilisateurs ont créés.
-            .row
-              .col-lg-4
-                .item
-                  input#answer_1.required(type='radio', name='branch_1_group_1', value='Seo-Optimization')
-                  label(for='answer_1')
-                    img(src='img/seo_icon_1.svg', alt='')
-                    strong Sondage 1
-                    | Description
+            .row.justify-content-center
+              each poll in polls
+                  .col-lg-4
+                    .item
+                      //input.required(type='radio', name='branch_1_group_1', value='Seo-Optimization')
+                      a(href='/poll/' + poll.id)
+                          label(for='answer_1')
+                            if poll.background
+                              img(src='img/uploads/' + poll.background, alt='')
+                            strong #{poll.question}
+                            | Publié par #{poll.user.firstname} #{moment(poll.createdAt).fromNow()}
 
 include footer.pug

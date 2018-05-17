@@ -1,0 +1,30 @@
+include header.pug
+main
+  .container
+    #wizard_container
+        //
+            form#wrapped(name='example-1', method='POST')
+                input#website(name='website', type='text', value='')
+        #middle-wizard
+          .step(data-state='branchtype')
+            .question_title
+              h3#question Question
+              p#description Entrez une description courte pour votre sondage
+            .row.justify-content-center
+                .col-lg-4(style='margin-bottom:25px')
+                  .item#add_answer
+                    //input.required(id='new_answer', type='radio', name='answer', value='')
+                    label(for='add_answer')                    
+                        strong 
+                            i.icon-plus
+                            | Ajouter
+                        span Réponse, description
+                      
+        #bottom-wizard
+          button.forward(type='button', name='forward') Enregistrer
+          
+          
+        script(src='//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js')
+        script(src='/js/create.js')
+
+include footer.pug

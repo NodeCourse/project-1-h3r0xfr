@@ -3,7 +3,6 @@ const formidable = require('formidable');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const express = require('express');
-//const bcrypt = require('bcrypt-nodejs');
 const app = express();
 
 const db = require('./database');
@@ -31,8 +30,17 @@ function render(req, res, view, params) {
 
     if(!params)
         data = {};
-    if(req.user)
+
+    if(req.user) {
+        console.log('User logged: ' + req.user.email);
+        if(auth.routes.noLogin.includes(view))
+            return res.redirect('/');
         data.user = req.user;
+    }
+    else if(auth.routes.needLogin.includes(view)) {
+        console.log('User not logged but required');
+        return res.redirect('/login');
+    }
 
     res.render(view, data);
 }
@@ -44,7 +52,7 @@ function showError(res, view, message) {
 }
 
 app.get('/', (req, res) => {
-    db.Poll.findAll().then((data) => {
+    db.Poll.findAll({ include: [db.User] }).then((data) => {
         render(req, res, 'home', {
             polls: data
         });
@@ -66,6 +74,10 @@ app.get('/poll/:id(\\d+)/', (req, res) => {
             });
         }
     });
+});
+
+app.get('/create', (req, res) => {
+    render(req, res, 'create');
 });
 
 app.get('/login', (req, res) => {

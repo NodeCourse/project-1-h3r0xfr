@@ -1,10 +1,15 @@
 const passport = require('passport');
-//const Strategy = require('passport-strategy');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
 const db = require('./database');
 const COOKIE_SECRET = '8fywWLR4tWnLRZV063rW';
+
+// Routes access specifications
+const routes = {
+    needLogin: ['create'],
+    noLogin: ['login', 'register']
+};
 
 passport.use(new LocalStrategy((email, password, done) => {
 
@@ -14,7 +19,6 @@ passport.use(new LocalStrategy((email, password, done) => {
         })
         .then((user) => {
             bcrypt.compare(password, user.password, (err, res) => {
-                console.log(res);
                 if(res) return done(null, user);
             });
         })
@@ -40,5 +44,6 @@ passport.deserializeUser((email, cb) => {
 module.exports = {
     passport: passport,
     bcrypt: bcrypt,
-    secret: COOKIE_SECRET
+    secret: COOKIE_SECRET,
+    routes: routes
 };
