@@ -1,0 +1,32 @@
+include header.pug
+main
+  .container
+    #wizard_container
+        //
+            form#wrapped(name='example-1', method='POST')
+                input#website(name='website', type='text', value='')
+        // Leave input above for security protection, read docs for details
+        #middle-wizard
+          // First branch What Type of Project ==============================
+          .step(data-state='branchtype')
+            .question_title(id="poll_" + poll.id)
+              h3 #{poll.question}
+              p #{poll.description}
+            .row
+              each answer in poll.answers
+                  .col-lg-4
+                    .item
+                      input.required(id='answer_' + answer.id, type='radio', name='answer', value=answer.id)
+                      label(for='answer_' + answer.id)
+                        if answer.image
+                            img(src='/img/uploads/' + answer.image, alt='')
+                        strong #{answer.answer}
+                        | #{answer.description}
+
+        #bottom-wizard
+          button.forward(type='button', name='forward') Valider
+        // /bottom-wizard
+    // /Wizard container
+  // /Container
+// /main
+include footer.pug

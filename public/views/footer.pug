@@ -1,0 +1,47 @@
+footer
+  .container.clearfix
+    ul
+      li
+        a.animated_link(href='/') Liste des sondages
+      li
+        a.animated_link(href='/create')
+            strong Créer un sondage
+    p &copy; 2018 Poll
+// /footer
+.cd-overlay-nav
+  span
+// /cd-overlay-nav
+.cd-overlay-content
+  span
+// /cd-overlay-content
+a.cd-nav-trigger(href='#0')
+  | Menu
+  span.cd-icon
+// /cd-nav-trigger
+
+// Modal terms
+//
+    .modal.fade(tabindex='-1', role='dialog', aria-labelledby='termsLabel', aria-hidden='true')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5#termsLabel.modal-title Terms and conditions
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body
+            p
+              | Lorem ipsum dolor sit amet, in porro albucius qui, in 
+              strong nec quod novum accumsan
+              | , mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.
+            p
+              | Lorem ipsum dolor sit amet, in porro albucius qui, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus. Lorem ipsum dolor sit amet, 
+              strong in porro albucius qui
+              | , in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.
+            p
+              | Lorem ipsum dolor sit amet, in porro albucius qui, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.
+// /Modal terms
+
+// COMMON SCRIPTS
+script(src='/js/common_scripts.min.js')
+script(src='/js/menu.js')
+script(src='/js/main.js')

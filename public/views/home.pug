@@ -1,0 +1,19 @@
+include header.pug
+main
+  .container
+    #wizard_container
+        #middle-wizard
+          .step(data-state='branchtype')
+            .question_title
+              h3 Bienvenue
+              p Découvrez les sondages publics que nos utilisateurs ont créés.
+            .row
+              .col-lg-4
+                .item
+                  input#answer_1.required(type='radio', name='branch_1_group_1', value='Seo-Optimization')
+                  label(for='answer_1')
+                    img(src='img/seo_icon_1.svg', alt='')
+                    strong Sondage 1
+                    | Description
+
+include footer.pug

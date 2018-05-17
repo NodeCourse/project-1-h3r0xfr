@@ -1,0 +1,28 @@
+include header.pug
+main
+  .container
+    #wizard_container        
+        #middle-wizard
+          .step(data-state='branchtype')
+            .question_title
+              h3 Créer un compte
+              p pour commencer à créer de formidables sondages
+          .row.justify-content-center
+            .col-lg-5
+              .box_general(style='margin-bottom:50px')
+                form(method='POST')
+                    .form-group
+                      input.form-control(type='text', name='firstname', placeholder='Prénom', required)
+                    .form-group
+                      input.form-control(type='text', name='lastname', placeholder='Nom', required)
+                    .form-group
+                      input.form-control(type='email', name='email', placeholder='Adresse e-mail', required)
+                    .form-group
+                      input.form-control(type='password', name='password', placeholder='Mot de passe', required)
+                    .form-group(style='margin-bottom:0;text-align:center;')
+                      button.submit(type='submit', name='register') Valider
+                hr
+                p(style='margin-bottom:0;text-align:center;') Vous avez déjà un compte ? 
+                    a(href='/login') Connexion
+    script(src='/js/ajax/login.js')
+include footer.pug

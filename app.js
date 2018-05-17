@@ -1,9 +1,9 @@
 const fs = require('fs');
-const dateFormat = require('dateformat');
 const formidable = require('formidable');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const express = require('express');
+//const bcrypt = require('bcrypt-nodejs');
 const app = express();
 
 const db = require('./database');
@@ -38,18 +38,99 @@ function render(req, res, view, params) {
 }
 
 function showError(res, view, message) {
-    render(req, res, 'new', {
+    render(req, res, view, {
         error: message
     });
 }
 
 app.get('/', (req, res) => {
-    db.Post.findAll({ include: [db.Vote], order: [['createdAt', 'DESC']] }).then((data) => {
-        render(req, res, 'list', { posts: data });
+    db.Poll.findAll().then((data) => {
+        render(req, res, 'home', {
+            polls: data
+        });
     });
 });
 
-app.get('/post/:id(\\d+)/', (req, res) => {
+app.get('/poll/:id(\\d+)/', (req, res) => {
+    let id = req.params.id;
+
+    db.Poll.findOne({
+        where: {id: id},
+        include: [db.Answer]
+    }).then(function(data) {
+        if(!data) {
+            res.redirect('/');
+        } else {
+            render(req, res, 'poll', {
+                poll: data
+            });
+        }
+    });
+});
+
+app.get('/login', (req, res) => {
+    render(req, res, 'login');
+});
+
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
+
+app.get('/register', (req, res) => {
+    render(req, res, 'register');
+});
+
+app.post('/login', (req, res, next) => {
+    let form = new formidable.IncomingForm();
+
+    form.parse(req, function (err, fields, files) {
+
+        req.body = {
+            username: fields.username,
+            password: fields.password
+        };
+
+        auth.passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/login'
+        })(req, res, next);
+
+    });
+});
+
+app.post('/register', (req, res) => {
+    let form = new formidable.IncomingForm();
+
+    form.parse(req, function (err, fields, files) {
+        let uFirstname = fields.firstname;
+        let uLastname = fields.lastname;
+        let uEmail = fields.email;
+        let uPassword = fields.password;
+
+        if(uFirstname !== '' && uLastname !== '' && uEmail !== '' && uPassword !== '')
+        {
+            auth.bcrypt.hash(uPassword, 12, (err, hash) => {
+                console.log('Hash: ' + hash + ' / Error: ' + err);
+                if(err)
+                    return showError(res, 'register', 'Une erreur est survenue lors de la création.');
+
+                db.User.create({
+                    firstname: uFirstname,
+                    lastname: uLastname,
+                    email: uEmail,
+                    password: hash
+                }).then((result) => {
+                    res.redirect('/login?newUser');
+                });
+            });
+        }
+        else
+            return showError(res, 'register', 'Vous devez compléter tous les champs.');
+    });
+});
+
+/*app.get('/post/:id(\\d+)/', (req, res) => {
     let id = req.params.id;
 
     db.Post.find({
@@ -176,38 +257,8 @@ app.post('/login', (req, res, next) => {
     });
 });
 
-app.get('/logout', function(req, res){
-    req.logout();
-    res.redirect('/');
-});
-
 app.get('/register', (req, res) => {
     render(req, res, 'register');
-})
-
-app.post('/register', (req, res) => {
-    let form = new formidable.IncomingForm();
-
-    form.parse(req, function (err, fields, files) {
-        let uFirstname = fields.firstname;
-        let uLastname = fields.lastname;
-        let uEmail = fields.email;
-        let uPassword = fields.password;
-
-        if(uFirstname !== '' && uLastname !== '' && uEmail !== '' && uPassword !== '')
-        {
-            db.User.create({
-                firstname: uFirstname,
-                lastname: uLastname,
-                email: uEmail,
-                password: uPassword
-            }).then((result) => {
-                res.redirect('/login?newUser');
-            });
-        }
-        else
-            return showError(res, 'register', 'Vous devez compléter tous les champs.');
-    });
-});
+})*/
 
 app.listen(3000);

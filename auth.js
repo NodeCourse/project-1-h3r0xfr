@@ -1,21 +1,22 @@
 const passport = require('passport');
-const Strategy = require('passport-strategy');
+//const Strategy = require('passport-strategy');
 const LocalStrategy = require('passport-local').Strategy;
-const db = require('./database');
+const bcrypt = require('bcrypt');
 
+const db = require('./database');
 const COOKIE_SECRET = '8fywWLR4tWnLRZV063rW';
 
 passport.use(new LocalStrategy((email, password, done) => {
 
     db.User
         .findOne({
-            where: {
-                email: email,
-                password: password
-            }
+            where: { email: email }
         })
         .then((user) => {
-            return done(null, user);
+            bcrypt.compare(password, user.password, (err, res) => {
+                console.log(res);
+                if(res) return done(null, user);
+            });
         })
         .catch(done);
 
@@ -38,5 +39,6 @@ passport.deserializeUser((email, cb) => {
 
 module.exports = {
     passport: passport,
+    bcrypt: bcrypt,
     secret: COOKIE_SECRET
 };
