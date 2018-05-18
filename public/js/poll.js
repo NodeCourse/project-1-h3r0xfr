@@ -18,9 +18,19 @@ $(document).ready(function() {
                     answer: answer
                 }
             }).done(function(res) {
-                console.log(res);
+
+                let total = 0;
+                $.each(res, function(index, element) {
+                    total += element.results.length;
+                });
+
+                $('#bottom-wizard').html('<p>' + total + ' réponses au total</p>');
+
+                let nbAnswers = 0;
                 items.each(function(index, element) {
-                    $(element).text(res[index].results.length);
+                    nbAnswers = res[index].results.length;
+                    $(element).children('p').text($(element).children('strong').text());
+                    $(element).children('strong').text(((nbAnswers * 100)/total).toFixed(2) + '% (' + nbAnswers + ')');
                 });
 
             });

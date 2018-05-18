@@ -19,7 +19,7 @@ main
                         if answer.image
                             img(src='/img/uploads/' + answer.image, alt='')
                         strong #{answer.answer}
-                        | #{answer.description}
+                        p(style='margin-bottom:0') #{answer.description}
 
         #bottom-wizard
           button.forward(type='button', name='forward') Valider
