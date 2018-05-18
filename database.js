@@ -38,6 +38,9 @@ pollModel.belongsTo(userModel);
 answerModel.hasMany(resultModel);
 resultModel.belongsTo(answerModel);
 
+pollModel.hasMany(resultModel);
+resultModel.belongsTo(pollModel);
+
 // Synchronization
 db.sync();
 

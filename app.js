@@ -79,6 +79,21 @@ app.get('/create', (req, res) => {
     render(req, res, 'create');
 });
 
+app.post('/create', (req, res) => {
+    let origin = req.headers.origin;
+    let form = new formidable.IncomingForm();
+
+    form.parse(req, function (err, fields, files) {
+        let data = JSON.parse(fields.data);
+        let url = origin + '/poll/' + data.id;
+
+        render(req, res, 'create_success', {
+            poll: data,
+            url: url
+        });
+    });
+});
+
 app.get('/login', (req, res) => {
     render(req, res, 'login');
 });
@@ -122,7 +137,6 @@ app.post('/register', (req, res) => {
         if(uFirstname !== '' && uLastname !== '' && uEmail !== '' && uPassword !== '')
         {
             auth.bcrypt.hash(uPassword, 12, (err, hash) => {
-                console.log('Hash: ' + hash + ' / Error: ' + err);
                 if(err)
                     return showError(res, 'register', 'Une erreur est survenue lors de la création.');
 
@@ -145,13 +159,30 @@ app.post('/register', (req, res) => {
 app.group('/api', (router) => {
     router.group('/poll', (router) => {
 
-        router.post("/new", (req, res) => {
+        router.post('/:id/answer', (req, res) => {
+            let id = req.params.id;
+            let form = new formidable.IncomingForm();
+
+            form.parse(req, function (err, fields, files) {
+                db.Result.create({
+                    answerId: fields.answer,
+                    pollId: id
+                }).then((result) => {
+                    db.Answer.findAll({
+                        where: {pollId: result.pollId},
+                        include: [db.Result]
+                    }).then((results) => {
+                        res.json(results);
+                    });
+                });
+            });
+        });
+
+        router.post('/new', (req, res) => {
             if(req.user) {
                 let form = new formidable.IncomingForm();
 
                 form.parse(req, function (err, fields, files) {
-                    console.log(fields.answers);
-
                     db.Poll.create({
                         question: fields.question,
                         description: fields.description,
@@ -161,6 +192,7 @@ app.group('/api', (router) => {
                             let answers = JSON.parse(fields.answers);
                             answers.forEach(function(element) { element.pollId = poll.id; });
                             db.Answer.bulkCreate(answers);
+                            res.json(poll);
                         }
                     });
                 });

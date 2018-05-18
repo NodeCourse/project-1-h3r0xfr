@@ -25,6 +25,13 @@ head
   
   script(src='/js/modernizr.js')
   script(src='/js/jquery-2.2.4.min.js')
+  script(src='/js/bootstrap-notify.js')
+  
+  if error
+      script showError(#{error})
+  else if success
+      script showSuccess(#{success})
+      
   // Modernizr
 #preloader
   div(data-loader='circle-side')

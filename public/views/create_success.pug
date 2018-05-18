@@ -1,0 +1,29 @@
+include header.pug
+main
+  .container
+    #wizard_container        
+        #middle-wizard
+          .step(data-state='branchtype')
+            .question_title
+              h3 Wouhouu !
+              p Votre sondage a été créé avec succès.
+          .row.justify-content-center
+            .col-lg-5
+              .box_general(style='margin-bottom:50px;text-align:center;')
+                  h5 #{poll.question}
+                  span #{poll.description}
+                  hr
+                  div(style='width:100%;font-size:24px;')
+                      h4 Partager
+                      div
+                          a(href='/poll/' + poll.id, style='font-size:18px') #{url}
+                          i#copy(style='font-size:18px;vertical-align:middle;cursor:pointer;', data-clipboard-text=url).icon-paste
+                      a(href='mailto:?subject=Poll:%20' + poll.question + '&body=' + url)
+                          i.icon-mail
+                      a(href='https://twitter.com/home?status=' + poll.question + '%20' + url, target='_blank')
+                          i.icon-twitter
+                              
+                  script(src='//cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js')
+                  script(src='/js/create_success.js')
+
+include footer.pug

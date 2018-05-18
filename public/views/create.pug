@@ -20,8 +20,13 @@ main
                         span Réponse, description
                       
         #bottom-wizard
-          button.forward(type='button', name='forward') Enregistrer
+          button.forward(type='button', name='forward') Créer le sondage
+          p(style="display:none;font-size:18px;")
+              img(src="/img/loader.gif", style="margin-right:10px")
+              | Création en cours...
           
+        form#form-wizard(action='/create', method='POST')
+            input#form-data(type='hidden', name='data', value='')
           
         script(src='//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js')
         script(src='/js/create.js')

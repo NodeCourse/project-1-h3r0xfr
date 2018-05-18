@@ -7,7 +7,7 @@ const COOKIE_SECRET = '8fywWLR4tWnLRZV063rW';
 
 // Routes access specifications
 const routes = {
-    needLogin: ['create'],
+    needLogin: ['create', 'create_success'],
     noLogin: ['login', 'register']
 };
 

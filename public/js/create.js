@@ -28,6 +28,12 @@ $(document).ready(function() {
             let answers = [];
             let total = $('.item > label').length;
 
+            if(total < 3)
+                return showError('Vous devez ajouter au moins 2 réponses.');
+
+            $('#bottom-wizard button').hide();
+            $('#bottom-wizard p').show();
+
             $('.item > label').each(function(index, element) {
                 if(index < (total - 1)) {
                     answers.push({
@@ -49,8 +55,14 @@ $(document).ready(function() {
                 dataType: 'json',
                 data: poll
             }).done(function(res) {
-                console.log(res);
-                // TODO
+                if(res.error) {
+                    $('#bottom-wizard p').hide();
+                    $('#bottom-wizard button').show();
+                    return showError(res.error);
+                }
+
+                $('#form-data').val(JSON.stringify(res));
+                $('#form-wizard').submit();
             });
 
         });

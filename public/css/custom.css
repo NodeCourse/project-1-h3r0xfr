@@ -21,3 +21,11 @@
 {
     width: 100%;
 }
+
+.item input:not(.form-control) {
+    position: absolute;
+}
+
+.item label {
+    margin-bottom: 15px;
+}

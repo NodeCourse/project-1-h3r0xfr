@@ -23,5 +23,9 @@ main
 
         #bottom-wizard
           button.forward(type='button', name='forward') Valider
+          
+        script.
+            let pollId = #{poll.id};
+        script(src='/js/poll.js')
 
 include footer.pug
