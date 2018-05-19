@@ -8,7 +8,15 @@ main
               h3 Bienvenue
               p Découvrez les sondages publics que nos utilisateurs ont créés.
             .row.justify-content-center
-              each poll in polls
+                .col-lg-12
+                    .item
+                        a(href='/create')
+                            label(style='padding:10px;background-color:#e6e6e6;')
+                                strong
+                                    i.icon-plus
+                                    | Créer un sondage
+                        
+                each poll in polls
                   .col-lg-4
                     .item
                       a(href='/poll/' + poll.id)

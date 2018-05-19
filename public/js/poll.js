@@ -19,6 +19,8 @@ $(document).ready(function() {
                 }
             }).done(function(res) {
 
+                showSuccess('Le vote a été pris en compte.');
+
                 let total = 0;
                 $.each(res, function(index, element) {
                     total += element.results.length;

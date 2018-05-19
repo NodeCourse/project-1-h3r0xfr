@@ -18,8 +18,8 @@ $(document).ready(function() {
             });
         });
 
-        answer.children('strong').text('Réponse').editable();
-        answer.children('span').text('Description').editable();
+        answer.children('strong').text('Entrez une réponse').editable();
+        answer.children('span').text('Entrez une description').editable();
     });
 
     $('.forward')

@@ -3,7 +3,7 @@ head
   meta(charset='utf-8')
   meta(http-equiv='X-UA-Compatible', content='IE=edge')
   meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-  meta(name='description', content='STEPS | Multipurpose Working Wizard with Branches')
+  meta(name='description', content='Créez des sondages simplement en quelques secondes')
   meta(name='author', content='Ansonika')
   title Poll
   // Favicons
@@ -49,13 +49,15 @@ header
       .col-9
         #social
           ul
-            li
-              if user
-                  a(href='/logout')
+            if user
+                li
                     span
                         i(style='margin-right:5px').icon-user
                         | #{user.firstname} #{user.lastname}
-              else
+                li
+                    a(href='/logout', style='color:lightcoral').icon-power
+            else
+                li
                   a(href='/login')
                     span
                         i(style='margin-right:5px').icon-user
